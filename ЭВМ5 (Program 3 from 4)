@@ -15,7 +15,6 @@ public:
 	List() :Head(NULL), Tail(NULL) {};
 	~List();
 	void Show();
-
 	void Add(int x);
 	void Ymn();
 };
