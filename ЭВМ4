@@ -1,27 +1,25 @@
 #include "stdafx.h" 
 #include <iostream> 
 
-using namespace std; 
+using namespace std;
 
+int main()
 
+{
+	setlocale(0, "");
+	int i, j, k;
+	cin >> k;
+	for (i = 2; i < k; i++) {
 
-int main() 
+		for (j = 2; j <= (i / j); j++)
 
-{ 
-setlocale(0, ""); 
-int i, j, k; 
-cin » k; 
-for (i = 2; i<k; i++) { 
+			if (!(i%j)) break;
 
-for (j = 2; j <= (i / j); j++) 
+		if (j > (i / j)) cout << i << " ";
 
-if (!(i%j)) break; // Если число имеет множитель, значит, оно не простое. 
+	}
 
-if (j >(i / j)) cout « i «" "; 
-
-
-} 
-system("pause"); 
-return 0; 
+	system("pause");
+	return 0;
 
 }
