@@ -1,0 +1,199 @@
+#include "stdafx.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+
+	int x, y, p = 0;
+	char *d = "X";
+	char *b = "O";
+	char a[3][3];
+	char *c = " ";
+
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			a[i][j] = *c;
+			cout << a[i][j] << "|";
+		}
+		cout << "\n";
+	}
+
+	for (int k = 0; k < 9;)
+	{
+		cout << "Выберите строку и столбец\n";
+		cin >> x >> y;
+		if (a[x - 1][y - 1] == *c && a[x - 1][y - 1] != *b)
+		{
+			a[x - 1][y - 1] = *d;
+		}
+		else {
+			cout << "Ошибка";
+			return 0;
+		}
+
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				cout << a[i][j] << "|";
+			}
+			cout << "\n";
+		}
+
+
+		k = k++;
+
+		for (int i = 0; i < 3; i++)
+			for (int j = 0; j < 3; j++)
+				if (a[i][j] == *c && a[i][j] != *d && p == 0)
+				{
+					a[i][j] = *b; p++;
+				}
+
+		p = 0;
+
+		for (int i = 0; i < 3; i++)
+		{
+			for (int j = 0; j < 3; j++)
+			{
+				cout << a[i][j] << "|";
+			}
+			cout << "\n";
+
+		}
+
+		k = k++;
+
+
+		/////////////////////////////////////////////////////////
+
+		if (a[0][0] == *d && a[0][1] == *d && a[0][2] == *d)
+		{
+			cout << "Вы выиграли!\n";
+			system("pause");
+			return 0;
+		}
+
+		else if (a[1][0] == *d && a[1][1] == *d && a[1][2] == *d)
+		{
+			cout << "Вы выиграли!\n";
+			system("pause");
+			return 0;
+		}
+
+		else if (a[2][0] == *d && a[2][1] == *d && a[2][2] == *d)
+		{
+			cout << "Вы выиграли!\n";
+			system("pause");
+			return 0;
+		}
+
+		else if (a[0][0] == *d && a[1][0] == *d && a[2][0] == *d)
+		{
+			cout << "Вы выиграли!\n";
+			system("pause");
+			return 0;
+		}
+
+		else if (a[0][1] == *d && a[1][1] == *d && a[2][1] == *d)
+		{
+			cout << "Вы выиграли!\n";
+			system("pause");
+			return 0;
+		}
+
+		else if (a[0][2] == *d && a[1][2] == *d && a[2][2] == *d)
+		{
+			cout << "Вы выиграли!\n";
+			system("pause");
+			return 0;
+		}
+
+		else if (a[0][0] == *d && a[1][1] == *d && a[2][2] == *d)
+		{
+			cout << "Вы выиграли!\n";
+			system("pause");
+			return 0;
+		}
+
+		else if (a[0][2] == *d && a[1][1] == *d && a[2][0] == *d)
+		{
+			cout << "Вы выиграли!\n";
+			system("pause");
+			return 0;
+		}
+
+		////////////////////////////////////////////////////////
+
+		if (a[0][0] == *b && a[0][1] == *b && a[0][2] == *b)
+		{
+			cout << "Выиграл компьютер!\n";
+			system("pause");
+			return 0;
+		}
+
+		else if (a[1][0] == *b && a[1][1] == *b && a[1][2] == *b)
+		{
+			cout << "Выиграл компьютер!\n";
+			system("pause");
+			return 0;
+		}
+
+		else if (a[2][0] == *b && a[2][1] == *b && a[2][2] == *b)
+		{
+			cout << "Выиграл компьютер!\n";
+			system("pause");
+			return 0;
+		}
+
+		else if (a[0][0] == *b && a[1][0] == *b && a[2][0] == *b)
+		{
+			cout << "Выиграл компьютер!\n";
+			system("pause");
+			return 0;
+		}
+
+		else if (a[0][1] == *b && a[1][1] == *b && a[2][1] == *b)
+		{
+			cout << "Выиграл компьютер!\n";
+			system("pause");
+			return 0;
+		}
+
+		else if (a[0][2] == *b && a[1][2] == *b && a[2][2] == *b)
+		{
+			cout << "Выиграл компьютер!\n";
+			system("pause");
+			return 0;
+		}
+
+		else if (a[0][0] == *b && a[1][1] == *b && a[2][2] == *b)
+		{
+			cout << "Выиграл компьютер!\n";
+			system("pause");
+			return 0;
+		}
+
+		else if (a[0][2] == *b && a[1][1] == *b && a[2][0] == *b)
+		{
+			cout << "Выиграл компьютер!\n";
+			system("pause");
+			return 0;
+		}
+	}
+
+	cout << "Ничья!\n";
+	system("pause");
+	return 0;
+}
+
+
+Status API Training Shop Blog About Pricing
+© 2015 GitHub, Inc. Terms Privacy Security Cont
