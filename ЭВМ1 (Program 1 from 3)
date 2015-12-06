@@ -1,0 +1,140 @@
+#include "stdafx.h"
+#include "stdio.h"
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+	int n;
+	cout << "Сколько чисел в массиве?\n";
+	cin >> n;
+	cout << "Введите числа:\n";
+	int *a = new int[n];
+	for (int i = 0; i < n; i++)
+		cin >> a[i];
+	char c;
+	for (;;)
+	{
+		cout << "\n";
+		cout << "Какое действие выполнить?\n";
+		cout << "1)Найти количество чётных чисел\n";
+		cout << "2)Найти номер минимального числа\n";
+		cout << "3)Найти количество чисел, равных A(A вводится с клавиатуры)\n";
+		cout << "4)Найти номер первого отрицательного числа\n";
+		cout << "5)Найти максимальное отрицательное число\n";
+		cout << "6)Найти количество чисел, меньших первого числа массива\n";
+		cout << "7)Найти разность сумм четных и нечётных элементов массива\n";
+		cout << "\n";
+		cin >> c;
+		cout << "\n";
+		switch (c)
+		{
+
+		case '1':
+		{
+			int k = 0;
+			for (int i = 0; i < n; i++)
+				if (a[i] % 2 == 0)
+				{
+					k = k++;
+				}
+			cout << k << " - количество чётных чисел\n";
+			break; }
+
+		case '2':
+		{
+			int min = a[0];
+			int k = 0;
+			for (int i = 0; i < n; i++)
+				if (a[i] < min)
+				{
+					min = a[i];
+					k = i;
+				}
+			cout << k + 1 << " - номер минимального числа\n";
+			break; }
+
+		case '3':
+		{
+			int A, k = 0;
+			cout << "Введите A:\n";
+			cin >> A;
+			cout << "\n";
+			for (int i = 0; i < n; i++)
+				if (A == a[i])
+				{
+					k = k++;
+				}
+			cout << k << " - количество чисел равных А\n";
+		break;}
+
+		case '4':
+		{
+			int k = 0, z = 0;
+			for (int i = 0; i < n; i++)
+				if (a[i] < 0 && z == 0)
+				{
+					z = 1;
+					k = i;
+				}
+			cout << k + 1 << " - номер первого отрицательного числа\n"; 
+		break;}
+
+		case '5':
+		{
+			int min;
+			for (int i = 0; i < n; i++)
+				if (a[i] < 0)
+				{
+					min = a[i];
+				}
+			for (int i = 0; i < n; i++)
+				if (a[i] >  min && a[i] < 0)
+				{
+					min = a[i];
+				}
+			cout << min << " - максимальное отрицательное число\n";
+			break;}
+		
+		case '6':
+		{
+			int k = 0;
+			for (int i = 1; i < n; i++)
+				if (a[i] < a[0])
+				{
+					k = k++;
+				}
+			cout << k << " - количество чисел, меньших первого числа массива\n";
+			break;}
+		
+		case '7':
+		{
+			int k = 0, chet = 0, nechet = 0;
+			for (int i = 0; i < n; i++)
+			{
+				if (a[i] % 2 == 0)
+				{
+					chet = chet + a[i];
+				}
+
+				if (a[i] % 2 != 0)
+				{
+					nechet = nechet + a[i];
+				}
+			}
+				cout << chet - nechet << " - разность сумм четных и нечётных элементов массива\n";
+
+				break;}
+			
+		default:
+		{
+		cout << "Ошибка";
+		break;}
+		
+		}
+	}
+	system("pause");
+	return 0;
+}
