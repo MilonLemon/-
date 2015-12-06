@@ -1,0 +1,68 @@
+#include "stdafx.h"
+#include "stdio.h"
+#include <stdlib.h>
+#include <iostream>
+#include <ctime> 
+using namespace std;
+int main()
+{
+	setlocale(LC_ALL, "Russian");
+	int n, c, p = 0;
+	srand(time(0));
+	cout << "Считать массив из файла (1) или сгенерировать случайный массив указанной длины (2)?\n";
+	cin >> c;
+	switch (c)
+{
+	case 1:  {
+
+
+		break;
+	}
+
+	case 2:  {
+
+		cout << "Введите количество элементов массива:\n";
+		cin >> n;
+		int *a = new int[n];
+
+		for (int i = 0; i < n; i++)
+			a[i] = -(n / 2) + rand() % n;
+
+		for (int i = 0; i < n; i++)
+			cout << a[i] << " ";
+		cout << "\n";
+
+		float start_time = clock() / 1000.0;
+
+		for (int i = 0; i < n - 1; i++) {
+			do {
+				for (int i = 0; i < n - 1; i++)
+					if (a[i]>a[i + 1]) {
+						p = a[i + 1];
+						a[i + 1] = a[i];
+						a[i] = p;
+					}
+			} while (a[i] > a[i + 1]);
+		}
+
+		float end_time = clock() / 1000.0;
+		float search_time = end_time - start_time;
+
+		for (int i = 0; i < n; i++)
+			cout << a[i] << " ";
+		cout << "\n";
+		cout << "Время сортировки равно " << search_time << " секундам \n";
+
+		break;
+	}
+
+	default:  {
+
+		cout << "Ошибка\n";
+		break;
+	}
+
+}
+	system("pause");
+	return 0;
+}
