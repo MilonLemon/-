@@ -13,7 +13,7 @@ class List
 	Node *Head, *Tail;
 public:
 	List() :Head(NULL), Tail(NULL) {};
-	~List(); 
+	~List();
 	void Show();
 
 	void Add(int x);
@@ -43,7 +43,7 @@ void List::Add(int x)
 		Tail->Next = temp;
 		Tail = temp;
 	}
-	else 
+	else
 	{
 		temp->Prev = NULL;
 		Head = Tail = temp;
@@ -96,8 +96,11 @@ int main(void) {
 	for (int i = 0; i < n; i++)
 		cin >> a[i];
 
+	cout << "\n";
+
 	for (int i = 0; i < n; i++)
-	lst.Add(a[i]);
+		lst.Add(a[i]);
+
 	lst.Show();
 	lst.Ymn();
 
