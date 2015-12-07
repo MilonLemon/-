@@ -1,1 +1,233 @@
+//поиск и сортировка - по наименованию тура, стоимости проезда, дате заезда.
+#include <iostream>
+#include <cctype>
+#include <cstring>
+#include <cstdlib>
+using namespace std;
 
+const int SIZE=100;
+
+struct inv_type {
+	char tourname [40];
+	char lastname[40];
+	double price_for_one_day;
+	char arrival_date[40];
+	int number_of_days;
+	char spend_on_the_passage[40];
+	int course;
+	int amount;
+}trip[SIZE];
+
+void enter(), init_list(), display();
+void update(), input(int i), search();
+
+int menu();
+
+int main()
+{
+	cout<<"\a";
+	char choice;
+	init_list();
+	for(;;){
+		choice = menu();
+		switch(choice) {
+			case 'e': enter();
+			break;
+			case 'd': display();
+			break;
+			case 'u': update();
+			break;
+			case 's': search();
+			break;
+			case 'q': return 0;
+		}
+	}
+	
+}	
+	
+void init_list()
+{
+	int t;
+	for (t=0; t<SIZE;t++) *trip[t].tourname='\0';
+}
+
+int menu()
+{
+	char ch;
+	cout<<'\n';
+	do{
+		cout<<"(E)nter\n";
+		cout<<"(D)isplay\n";
+		cout<<"(U)pdate\n";
+		cout<<"(S)earch\n";
+		cout<<"(Q)uit\n\n";
+		cout<<"Выберите команду: \n";
+		
+		cin>>ch;
+		
+	} while (!strchr("edusq",tolower(ch)))	;
+	return tolower(ch);
+}
+void enter()
+{
+	int i;
+	for(i=0; i<SIZE; i++)
+	if(!*trip[i].tourname) break;
+	if (i==SIZE) {
+		cout<<"Список полон. \n";
+		return;
+	}
+	input(i);
+}
+
+void input(int i)
+{
+	cout<<"Наименование тура: ";
+	cin>>trip[i].tourname;
+
+	cout<<"Фамилия клиента: ";
+	cin>>trip[i].lastname;
+	
+	cout<<"Цена одного дня (в рублях): ";
+	cin>>trip[i].price_for_one_day;
+	
+	cout<<"Дата заезда: ";
+	cin>>trip[i].arrival_date;
+	
+	cout<<"Количество дней: ";
+	cin>>trip[i].number_of_days;
+	
+	cout<<"Стоимость проезда (в рублях): ";
+	cin>>trip[i].spend_on_the_passage;
+	
+	cout<<"Курс валюты: ";
+	cin>>trip[i].course;
+	
+	cout<<"Количество валюты: ";
+	cin>>trip[i].amount;
+}
+
+void update()
+{
+	int i;
+	
+	char name[40];
+	
+	cout<<"Введите наименование тура: ";
+	cin>>name;
+	
+	for(i=0; i<SIZE; i++)
+		if (!strcmp(name,trip[i].tourname))break;
+	
+	if (i==SIZE) {
+		cout<<"Тур не найден.\n";
+		return;
+	}
+	cout<<"Введите новую информацию. \n";
+	input(i);
+}
+
+void display()
+{
+	int t;
+	
+	for(t=0; t<SIZE; t++) {
+		if(*trip[t].tourname) {
+			cout<<"Наименование тура: "<<trip[t].tourname<<'\n';
+			cout<<"Фамилия клиента: "<<trip[t].lastname;
+			cout<<"\nЦена одного дня (в рублях): ";
+			cout<<trip[t].price_for_one_day<<'\n';
+			cout<<"Дата заезда: " << trip[t].arrival_date<<'\n';
+			cout<<"Количество дней: " << trip[t].number_of_days<<'\n';
+			cout<<"Стоимость проезда: " << trip[t].spend_on_the_passage<<'\n';
+			cout<<"Курс валюты: " << trip[t].course<<'\n';
+			cout<<"Количество валюты: " << trip[t].amount<<'\n';
+			cout<<"\n";
+	}
+}
+}
+
+void search()
+{
+	int choice;
+	
+	for(int i=0;i<1;i++) {
+		
+		cout<<"Поиск по наименованию тура(1), стоимости проезда(2) или дате заезда(3)? \n";
+		
+		cin >>choice;
+		
+		switch (choice) {
+			
+		case 1:
+		
+		char name[80];
+		cout<<"Введите наименование тура: \n";
+	    cin>>name;
+		for(i=0; i<SIZE; i++) 
+			if (!strcmp(name,trip[i].tourname))break;
+		if (i==SIZE) {
+			cout<<"Тур не найден.\n";
+			return;}	
+		
+		cout<<"Наименование тура: "<<trip[i].tourname<<'\n';
+		cout<<"Фамилия клиента: "<<trip[i].lastname;
+		cout<<"\nЦена одного дня (в рублях): ";
+		cout<<trip[i].price_for_one_day<<'\n';
+		cout<<"Дата заезда: " << trip[i].arrival_date<<'\n';
+		cout<<"Количество дней: " << trip[i].number_of_days<<'\n';
+		cout<<"Стоимость проезда: " << trip[i].spend_on_the_passage<<'\n';
+		cout<<"Курс валюты: " << trip[i].course<<'\n';
+		cout<<"Количество валюты: " << trip[i].amount<<'\n';
+		
+		break; 
+		
+		case 2:
+		
+		char money[80];
+		cout<<"Введите стоимость проезда: \n";
+	    cin>>money;
+		for(i=0; i<SIZE; i++) 
+			if (!strcmp(money,trip[i].spend_on_the_passage))break;
+		if (i==SIZE) {
+			cout<<"Тур не найден.\n";
+			return;}
+			
+		cout<<"Наименование тура: "<<trip[i].tourname<<'\n';
+		cout<<"Фамилия клиента: "<<trip[i].lastname;
+		cout<<"\nЦена одного дня (в рублях): ";
+		cout<<trip[i].price_for_one_day<<'\n';
+		cout<<"Дата заезда: " << trip[i].arrival_date<<'\n';
+		cout<<"Количество дней: " << trip[i].number_of_days<<'\n';
+		cout<<"Стоимость проезда: " << trip[i].spend_on_the_passage<<'\n';
+		cout<<"Курс валюты: " << trip[i].course<<'\n';
+		cout<<"Количество валюты: " << trip[i].amount<<'\n';
+		
+		break; 
+		
+		
+		case 3:
+		
+		char date[80];
+		cout<<"Введите дату заезда: \n";
+	    cin>>date;
+		for(i=0; i<SIZE; i++) 
+			if (!strcmp(date,trip[i].arrival_date))break;
+		if (i==SIZE) {
+			cout<<"Тур не найден.\n";
+			return;}
+			
+		cout<<"Наименование тура: "<<trip[i].tourname<<'\n';
+		cout<<"Фамилия клиента: "<<trip[i].lastname;
+		cout<<"\nЦена одного дня (в рублях): ";
+		cout<<trip[i].price_for_one_day<<'\n';
+		cout<<"Дата заезда: " << trip[i].arrival_date<<'\n';
+		cout<<"Количество дней: " << trip[i].number_of_days<<'\n';
+		cout<<"Стоимость проезда: " << trip[i].spend_on_the_passage<<'\n';
+		cout<<"Курс валюты: " << trip[i].course<<'\n';
+		cout<<"Количество валюты: " << trip[i].amount<<'\n';
+		
+		break; 
+	}
+}
+}
