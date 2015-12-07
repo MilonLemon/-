@@ -15,7 +15,7 @@ public:
 	List() :Head(NULL), Tail(NULL) {};
 	~List();
 	void Search(int x);
-	void Add(int x);
+	void Add(int y, int x);
 	void Delete(int x);
 	void Show();
 };
@@ -31,22 +31,74 @@ List::~List()
 	}
 }
 
-void List::Add(int x)
+void List::Add(int y, int x)
 {
-	Node *temp = new Node;
-	temp->Next = NULL;
-	temp->x = x;
+	Node *temp = Head;
+	Node *temp_2 = new Node;
+	Node *temp_3;
+	Node *temp_1;
+	temp_2->x = x;
+	int m = y;
+	int n = 0;
 
-	if (Head != NULL)
-	{
-		temp->Prev = Tail;
-		Tail->Next = temp;
-		Tail = temp;
+	if (temp != NULL) {
+
+		if (m != 1) {
+
+
+		//	for (int i = 0; i < m; i++) 
+			temp = temp->Next;
+			temp_3 = temp->Next;
+			temp_1 = temp;
+			temp->Next = temp_2;
+
+			temp = temp->Next;
+			temp->Prev = temp_1;
+			temp->Next = temp_3;
+
+			temp = temp->Next;
+			temp->Prev = temp_2;
+
+
+
+			/*while (temp != NULL) {
+
+			n++;
+
+			if (n == m-1) {
+
+				temp_3 = temp->Next;
+				temp_1 = temp;
+				temp->Next = temp_2;
+
+				temp = temp->Next;
+				temp->Prev = temp_1;
+				temp->Next = temp_3;
+
+				temp = temp->Next;
+				temp->Prev = temp_2;
+			}
+
+			temp = temp->Next;
+		}
+	}*/
+		}
+
+		if (m == 1) {
+
+			temp_3 = temp;
+			temp->Prev = temp_2;
+			temp = temp->Prev;
+			temp->Prev = NULL;
+			temp->Next = temp_3;
+		}
 	}
-	else
-	{
-		temp->Prev = NULL;
-		Head = Tail = temp;
+
+
+	if (Head == NULL) {
+		temp_2->Next = NULL;
+		temp_2->Prev = NULL;
+		Head = Tail = temp_2;
 	}
 }
 
@@ -117,13 +169,8 @@ void List::Delete(int x) {
 
 		else if (n == m && temp->Next != NULL && temp->Prev == NULL) {
 			temp_2 = temp->Next;
-			temp_3 = temp->Prev;
 			delete temp;
-			temp = temp_3;
-			temp->Next = temp_2;
-			temp = temp->Next;
-			temp->Prev = temp_3;
-			temp = temp->Prev;
+			temp = temp_2;
 		}
 
 		temp = temp->Next;
@@ -150,10 +197,13 @@ int main(void) {
 
 		case 1: {
 
-			int n;
-			cout << "Введите элемент:\n";
+			int n, m;
+			cout << "Введите номер элементa:\n";
 			cin >> n;
-			lst.Add(n);
+			cout << "Введите элемент:\n";
+			cin >> m;
+			lst.Add(n, m);
+			lst.Show();
 
 			break;
 		}
