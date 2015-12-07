@@ -1,1 +1,151 @@
+#include "stdafx.h"
+#include <iostream>
 
+using namespace std;
+struct Node
+{
+	int x;
+	Node *Next, *Prev;
+};
+
+class List
+{
+	Node *Head, *Tail;
+public:
+	List() :Head(NULL), Tail(NULL) {};
+	~List();
+	void Search(int x);
+	void Add(int x);
+	void Delete(int x);
+};
+
+
+List::~List()
+{
+	while (Head)
+	{
+		Tail = Head->Next;
+		delete Head;
+		Head = Tail;
+	}
+}
+
+void List::Add(int x)
+{
+	Node *temp = new Node;
+	temp->Next = NULL;
+	temp->x = x;
+
+	if (Head != NULL)
+	{
+		temp->Prev = Tail;
+		Tail->Next = temp;
+		Tail = temp;
+	}
+	else
+	{
+		temp->Prev = NULL;
+		Head = Tail = temp;
+	}
+}
+
+void List::Search(int x)
+{
+	Node *temp = Head;
+
+	while (temp != NULL) {
+
+		if (temp->x == x) {
+			cout << "I Found You ";
+			break;
+		}
+		else if (temp->x != x) {
+			cout << temp->x << " ";
+			temp = temp->Next;
+		}
+	}
+
+    cout << "\n";
+}
+
+void List::Delete(int x) {
+
+	Node *temp = Head;
+
+	while (x!=0) {
+
+		cout << temp;
+		temp = temp->Next;
+		x--;
+	}
+
+	while (temp->Next != NULL) {
+		temp->Next = Head;
+		Head->Prev = Tail;
+		Head = temp;
+		cout << Head;
+		}
+
+	delete temp;
+}
+
+int main(void) {
+
+	setlocale(LC_ALL, "Russian");
+
+	List lst;
+
+ for (;;) {
+
+	int c;
+	cout << "Какое действие выполнить?\n";
+	cout << "1) Вставка нового элемента с заданным номером\n";
+	cout << "2) Удаление элемента с заданным номером\n";
+	cout << "3) Поиск элемента в списке\n";
+	cin >> c;
+
+	switch (c) {
+
+		case 1: {
+
+			int n;
+			cout << "Введите элемент:\n";
+			cin >> n;
+			lst.Add(n);
+
+			break;
+		}
+
+		case 2: {
+
+			int n;
+			cout << "Введите номер элементa, который нужно удалить:\n";
+			cin >> n;
+			lst.Delete(n);
+
+			break;
+		}
+
+		case 3: {
+
+			int n;
+			cout << "Введите элемент, который нужно найти:\n";
+			cin >> n;
+			lst.Search(n);
+
+			break;
+		}
+
+		default: {
+
+			cout << "Ошибка\n";
+			break;
+		}
+
+	}
+	
+}
+
+	system("pause");
+
+}
