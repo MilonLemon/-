@@ -1,4 +1,5 @@
 //поиск и сортировка - по наименованию тура, стоимости проезда, дате заезда.
+#include "stdafx.h"
 #include <iostream>
 #include <cctype>
 #include <cstring>
