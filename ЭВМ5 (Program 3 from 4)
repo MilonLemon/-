@@ -14,10 +14,9 @@ class List
 public:
 	List() :Head(NULL), Tail(NULL) {};
 	~List();
-	void Search(int x);
-	void Add(int x);
-	void Delete(int x);
 	void Show();
+	void Add(int x);
+	void Ymn();
 };
 
 
@@ -50,25 +49,6 @@ void List::Add(int x)
 	}
 }
 
-void List::Search(int x)
-{
-	Node *temp = Head;
-
-	while (temp != NULL) {
-
-		if (temp->x == x) {
-			cout << "I Found You ";
-			break;
-		}
-		else if (temp->x != x) {
-			cout << temp->x << " ";
-			temp = temp->Next;
-		}
-	}
-
-	cout << "\n";
-}
-
 void List::Show()
 {
 	Node *temp = Tail;
@@ -82,52 +62,23 @@ void List::Show()
 	cout << "\n";
 }
 
-void List::Delete(int x) {
+void List::Ymn()
+{
 
-	int m = x;
-	int n = 0;
-	Node *temp = Head;
-	Node *temp_2;
-	Node *temp_3;
+	Node *temp = Tail;
+	Node *temp1 = Head;
+	int h = 0;
 
-	while (temp != NULL) {
+	while (temp != NULL && temp1 != NULL)
+	{
+		cout << (temp->x)*(temp1->x) << ' ';
+		h += temp->x*temp1->x;
+		temp = temp->Prev;
+		temp1 = temp1->Next;
 
-		n++;
-		if (n == m && temp->Next != NULL && temp->Prev != NULL) {
-			temp_2 = temp->Next;
-			temp_3 = temp->Prev;
-			delete temp;
-			temp = temp_3;
-			temp->Next = temp_2;
-			temp = temp->Next;
-			temp->Prev = temp_3;
-			temp = temp->Prev;
-		}
-
-		else if (n == m && temp->Next == NULL && temp->Prev != NULL) {
-			temp_2 = temp->Next;
-			temp_3 = temp->Prev;
-			delete temp;
-			temp = temp_3;
-			temp->Next = temp_2;
-			temp = temp->Next;
-			temp->Prev = temp_3;
-			temp = temp->Prev;
-		}
-
-		else if (n == m && temp->Next != NULL && temp->Prev == NULL) {
-			temp_2 = temp->Next;
-			temp_3 = temp->Prev;
-			delete temp;
-			temp = temp_3;
-			temp->Next = temp_2;
-			temp = temp->Next;
-			temp->Prev = temp_3;
-			temp = temp->Prev;
-		}
-
-		temp = temp->Next;
 	}
+	cout << "\n";
+	cout << "\n" << "Сумма равна " << h;
 
 }
 
@@ -135,60 +86,24 @@ int main(void) {
 
 	setlocale(LC_ALL, "Russian");
 
+	int n;
 	List lst;
+	cout << "Введите количество чисел:\n";
+	cin >> n;
+	int *a = new int[n];
+	cout << "Введите числа:\n";
+	for (int i = 0; i < n; i++)
+		cin >> a[i];
 
-	for (;;) {
+	cout << "\n";
 
-		int c;
-		cout << "Какое действие выполнить?\n";
-		cout << "1) Вставка нового элемента с заданным номером\n";
-		cout << "2) Удаление элемента с заданным номером\n";
-		cout << "3) Поиск элемента в списке\n";
-		cin >> c;
+	for (int i = 0; i < n; i++)
+		lst.Add(a[i]);
 
-		switch (c) {
+	lst.Show();
+	lst.Ymn();
 
-		case 1: {
-
-			int n;
-			cout << "Введите элемент:\n";
-			cin >> n;
-			lst.Add(n);
-
-			break;
-		}
-
-		case 2: {
-
-			int n;
-			cout << "Введите номер элементa, который нужно удалить:\n";
-			cin >> n;
-			lst.Delete(n);
-			lst.Show();
-
-			break;
-		}
-
-		case 3: {
-
-			int n;
-			cout << "Введите элемент, который нужно найти:\n";
-			cin >> n;
-			lst.Search(n);
-
-			break;
-		}
-
-		default: {
-
-			cout << "Ошибка\n";
-			break;
-		}
-
-		}
-
-	}
-
+	cout << '\n';
 	system("pause");
 
 }
