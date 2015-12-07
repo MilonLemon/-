@@ -17,6 +17,7 @@ public:
 	void Search(int x);
 	void Add(int x);
 	void Delete(int x);
+	void Show();
 };
 
 
@@ -65,28 +66,69 @@ void List::Search(int x)
 		}
 	}
 
-    cout << "\n";
+	cout << "\n";
+}
+
+void List::Show()
+{
+	Node *temp = Tail;
+
+	temp = Head;
+	while (temp != NULL)
+	{
+		cout << temp->x << " ";
+		temp = temp->Next;
+	}
+	cout << "\n";
 }
 
 void List::Delete(int x) {
 
+	int m = x;
+	int n = 0;
 	Node *temp = Head;
+	Node *temp_2;
+	Node *temp_3;
 
-	while (x!=0) {
+	while (temp != NULL) {
 
-		cout << temp;
-		temp = temp->Next;
-		x--;
-	}
-
-	while (temp->Next != NULL) {
-		temp->Next = Head;
-		Head->Prev = Tail;
-		Head = temp;
-		cout << Head;
+		n++;
+		if (n == m && temp->Next != NULL && temp->Prev != NULL) {
+			temp_2 = temp->Next;
+			temp_3 = temp->Prev;
+			delete temp;
+			temp = temp_3;
+			temp->Next = temp_2;
+			temp = temp->Next;
+			temp->Prev = temp_3;
+			temp = temp->Prev;
 		}
 
-	delete temp;
+		else if (n == m && temp->Next == NULL && temp->Prev != NULL) {
+			temp_2 = temp->Next;
+			temp_3 = temp->Prev;
+			delete temp;
+			temp = temp_3;
+			temp->Next = temp_2;
+			temp = temp->Next;
+			temp->Prev = temp_3;
+			temp = temp->Prev;
+		}
+
+		else if (n == m && temp->Next != NULL && temp->Prev == NULL) {
+			temp_2 = temp->Next;
+			temp_3 = temp->Prev;
+			delete temp;
+			temp = temp_3;
+			temp->Next = temp_2;
+			temp = temp->Next;
+			temp->Prev = temp_3;
+			temp = temp->Prev;
+		}
+
+		temp = temp->Next;
+	}
+
 }
 
 int main(void) {
@@ -95,16 +137,16 @@ int main(void) {
 
 	List lst;
 
- for (;;) {
+	for (;;) {
 
-	int c;
-	cout << "Какое действие выполнить?\n";
-	cout << "1) Вставка нового элемента с заданным номером\n";
-	cout << "2) Удаление элемента с заданным номером\n";
-	cout << "3) Поиск элемента в списке\n";
-	cin >> c;
+		int c;
+		cout << "Какое действие выполнить?\n";
+		cout << "1) Вставка нового элемента с заданным номером\n";
+		cout << "2) Удаление элемента с заданным номером\n";
+		cout << "3) Поиск элемента в списке\n";
+		cin >> c;
 
-	switch (c) {
+		switch (c) {
 
 		case 1: {
 
@@ -122,6 +164,7 @@ int main(void) {
 			cout << "Введите номер элементa, который нужно удалить:\n";
 			cin >> n;
 			lst.Delete(n);
+			lst.Show();
 
 			break;
 		}
@@ -142,9 +185,9 @@ int main(void) {
 			break;
 		}
 
+		}
+
 	}
-	
-}
 
 	system("pause");
 
