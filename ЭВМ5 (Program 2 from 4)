@@ -119,6 +119,8 @@ void List::Search(int x)
 
 void List::Show()
 {
+	cout << "\n";
+
 	Node *temp = Tail;
 
 	temp = Head;
