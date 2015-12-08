@@ -41,13 +41,13 @@ void List::Add(int y, int x)
 	int m = y;
 	int n = 0;
 
-	if (temp != NULL) {
+	if (Head != NULL) {
 
 		if (m != 1) {
 
-
-		//	for (int i = 0; i < m; i++) 
+			for (int i = 0; i < m; i++) 
 			temp = temp->Next;
+
 			temp_3 = temp->Next;
 			temp_1 = temp;
 			temp->Next = temp_2;
@@ -58,30 +58,8 @@ void List::Add(int y, int x)
 
 			temp = temp->Next;
 			temp->Prev = temp_2;
+			temp = Head;
 
-
-
-			/*while (temp != NULL) {
-
-			n++;
-
-			if (n == m-1) {
-
-				temp_3 = temp->Next;
-				temp_1 = temp;
-				temp->Next = temp_2;
-
-				temp = temp->Next;
-				temp->Prev = temp_1;
-				temp->Next = temp_3;
-
-				temp = temp->Next;
-				temp->Prev = temp_2;
-			}
-
-			temp = temp->Next;
-		}
-	}*/
 		}
 
 		if (m == 1) {
@@ -91,6 +69,7 @@ void List::Add(int y, int x)
 			temp = temp->Prev;
 			temp->Prev = NULL;
 			temp->Next = temp_3;
+			Head = temp;
 		}
 	}
 
@@ -145,7 +124,7 @@ void List::Delete(int x) {
 	while (temp != NULL) {
 
 		n++;
-		if (n == m && temp->Next != NULL && temp->Prev != NULL) {
+		if (n== m && temp->Next != NULL && temp->Prev != NULL) {
 			temp_2 = temp->Next;
 			temp_3 = temp->Prev;
 			delete temp;
@@ -157,20 +136,18 @@ void List::Delete(int x) {
 		}
 
 		else if (n == m && temp->Next == NULL && temp->Prev != NULL) {
-			temp_2 = temp->Next;
-			temp_3 = temp->Prev;
-			delete temp;
-			temp = temp_3;
-			temp->Next = temp_2;
 			temp = temp->Next;
-			temp->Prev = temp_3;
+			Head = temp;
 			temp = temp->Prev;
+			delete temp;
+			temp = Head;
 		}
 
 		else if (n == m && temp->Next != NULL && temp->Prev == NULL) {
-			temp_2 = temp->Next;
+			Head = temp->Next;
 			delete temp;
-			temp = temp_2;
+			temp = Head;
+			temp->Prev = NULL;
 		}
 
 		temp = temp->Next;
