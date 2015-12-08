@@ -45,22 +45,39 @@ void List::Add(int y, int x)
 
 		if (m != 1) {
 
-			for (int i = 0; i < m; i++) 
-			temp = temp->Next;
+			int i = 1;
 
-			temp_3 = temp->Next;
-			temp_1 = temp;
-			temp->Next = temp_2;
+			while (i < (m-1)) {
+				temp = temp->Next;
+				i++;
+			}
 
-			temp = temp->Next;
-			temp->Prev = temp_1;
-			temp->Next = temp_3;
+			if (temp->Next != NULL) {
 
-			temp = temp->Next;
-			temp->Prev = temp_2;
-			temp = Head;
+				temp_3 = temp->Next;
+				temp_1 = temp;
+				temp->Next = temp_2;
 
+				temp = temp->Next;
+				temp->Prev = temp_1;
+				temp->Next = temp_3;
+
+				temp = temp->Next;
+				temp->Prev = temp_2;
+
+				temp = Head;
+			}
+			
+			if (temp->Next == NULL) {
+				temp_3 = temp;
+				temp->Next = temp_2;;
+				temp = temp->Next;
+				temp->Next = NULL;
+				temp->Prev = temp_3;
+				Tail = temp;
 		}
+		
+	}
 
 		if (m == 1) {
 
@@ -71,13 +88,13 @@ void List::Add(int y, int x)
 			temp->Next = temp_3;
 			Head = temp;
 		}
-	}
-
+}
 
 	if (Head == NULL) {
 		temp_2->Next = NULL;
 		temp_2->Prev = NULL;
 		Head = Tail = temp_2;
+
 	}
 }
 
@@ -110,6 +127,16 @@ void List::Show()
 		cout << temp->x << " ";
 		temp = temp->Next;
 	}
+
+	cout << "\n";
+
+	temp = Tail;
+	while (temp != NULL)
+	{
+		cout << temp->x << " ";
+		temp = temp->Prev;
+	}
+
 	cout << "\n";
 }
 
@@ -124,6 +151,7 @@ void List::Delete(int x) {
 	while (temp != NULL) {
 
 		n++;
+
 		if (n== m && temp->Next != NULL && temp->Prev != NULL) {
 			temp_2 = temp->Next;
 			temp_3 = temp->Prev;
@@ -136,11 +164,8 @@ void List::Delete(int x) {
 		}
 
 		else if (n == m && temp->Next == NULL && temp->Prev != NULL) {
-			temp = temp->Next;
-			Head = temp;
-			temp = temp->Prev;
+			Tail = temp->Prev;
 			delete temp;
-			temp = Head;
 		}
 
 		else if (n == m && temp->Next != NULL && temp->Prev == NULL) {
