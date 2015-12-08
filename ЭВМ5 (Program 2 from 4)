@@ -129,15 +129,6 @@ void List::Show()
 	}
 
 	cout << "\n";
-
-	temp = Tail;
-	while (temp != NULL)
-	{
-		cout << temp->x << " ";
-		temp = temp->Prev;
-	}
-
-	cout << "\n";
 }
 
 void List::Delete(int x) {
@@ -166,6 +157,8 @@ void List::Delete(int x) {
 		else if (n == m && temp->Next == NULL && temp->Prev != NULL) {
 			Tail = temp->Prev;
 			delete temp;
+			temp = Tail;
+			temp->Next = NULL;
 		}
 
 		else if (n == m && temp->Next != NULL && temp->Prev == NULL) {
