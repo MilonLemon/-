@@ -81,7 +81,7 @@ void List::Delete() {
 			temp = Head;
 
 			if (temp == NULL) {
-				cout << "Стек пустой";
+				cout << "Очередь пустая";
 			}
 
 	}
