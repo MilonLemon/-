@@ -1,1 +1,337 @@
+#include "stdafx.h"
+#include <iostream>
+
+using namespace std;
+struct Node
+{
+	int x;
+	Node *Next, *Prev;
+};
+
+class List
+{
+	Node *Head, *Tail;
+public:
+	List() :Head(NULL), Tail(NULL) {};
+	~List();
+	void Search(int x);
+	void Add(int x);
+	void Delete();
+	void Show();
+};
+
+
+List::~List()
+{
+	while (Head)
+	{
+		Tail = Head->Next;
+		delete Head;
+		Head = Tail;
+	}
+}
+
+void List::Add(int x)
+{
+	int n;
+	cout << "С какого конца добавить элемент: с левого(1) или правого(2)?\n";
+	cin >> n;
+	switch (n) {
+	case (1) : {
+		/*
+		Node *temp = Head;
+		Node *temp_2 = new Node;
+		Node *temp_3;
+		temp_2->x = x;
+
+
+		if (Head != NULL) {
+		temp->Prev = temp_2;
+		temp_2->Next = temp;
+		Head = temp_2;
+		Head->Prev = NULL;
+
+		}
+
+		if (Head == NULL) {
+		temp_2->Next = NULL;
+		temp_2->Prev = NULL;
+		Head = Tail = temp_2;
+		}*/
+
+		Node *temp = new Node;
+		Node *FG = NULL;
+		temp->x = x;
+		Node *star = Head;
+
+		if (star == NULL && Head == NULL && Tail == NULL) {
+			temp->Next = NULL;
+			Head = Tail = star = temp;
+
+		}
+		else {
+			if (Head != NULL) {
+				FG = star;
+				star->Prev = temp;
+				Head = temp;
+				star = star->Prev;
+				star->Next = FG;
+				star = star->Next;
+				Head->Prev = NULL;
+
+
+			}
+
+		}
+
+		break;
+	}
+
+	case (2) : {
+		/*
+		Node *temp = Tail;
+		Node *temp_2 = new Node;
+		temp_2->x = x;
+
+		if (Head != NULL) {
+		temp->Next = temp_2;
+		temp_2->Prev = temp;
+		Tail = temp_2;
+		Tail->Next = NULL;
+		}
+
+		if (Head == NULL) {
+		temp_2->Next = NULL;
+		temp_2->Prev = NULL;
+		Head = Tail = temp_2;
+		}*/
+
+		Node *temp = new Node;
+		temp->x = x;
+		Node *star = Tail;
+
+
+		if (Head == NULL && Tail == NULL) {
+			Tail = temp;
+			Head = temp;
+			Tail->Next = NULL;
+			Head->Prev = NULL;
+
+		}
+		else {
+
+			if (Head != NULL)
+			{
+
+				star->Next = temp;
+				temp->Prev = star;
+				Tail = temp;
+				temp->Next = NULL;
+				Tail->Next = NULL;
+
+
+			}
+
+		}
+		break;
+	}
+
+	default: {
+
+		cout << "Ошибка\n";
+		break;
+	}
+
+
+	}
+}
+
+void List::Search(int x)
+{
+	Node *temp = Head;
+
+	while (temp != NULL) {
+
+		if (temp->x == x) {
+			cout << "I Found You ";
+			break;
+		}
+		else if (temp->x != x) {
+			cout << temp->x << " ";
+			temp = temp->Next;
+		}
+	}
+
+	cout << "\n";
+}
+
+void List::Show()
+{
+	cout << "\n";
+	Node *temp = Tail;
+
+	temp = Head;
+	while (temp != NULL)
+	{
+		cout << temp->x << " ";
+		temp = temp->Next;
+	}
+
+	cout << "\n\n";
+
+	temp = Tail;
+	while (temp != NULL)
+	{
+		cout << temp->x << " ";
+		temp = temp->Prev;
+	}
+
+	cout << "\n\n";
+}
+
+void List::Delete() {
+
+	int n;
+	cout << "С какого конца удалить элемент: с левого(1) или правого(2)?\n";
+	cin >> n;
+	switch (n) {
+
+	case (1) : {
+
+		Node *star = Head;
+		if (Head == NULL && Tail == NULL) { cout << "Нечего удалять\n"; }
+		else {
+			if (Head == Tail != NULL) {
+				delete star;
+				Tail = NULL;
+				Head = NULL;
+				cout << "Дек пустой\n";
+			}
+			else {
+				if (Head->Next != Tail && Head->Next != NULL) {
+
+					Head = star->Next;
+					delete star;
+					star = Head;
+					Head->Prev = NULL;
+
+
+				}
+				else {
+					if (Head->Next == Tail) {
+						delete Tail;
+						Tail = Head;
+						Tail->Next = NULL;
+						Head->Prev = NULL;
+
+					}
+				}
+			}
+		}
+	}
+
+	case (2) : {
+
+		Node *star = Head;
+		if (Head == NULL && Tail == NULL) { cout << "Нечего удалять\n"; }
+		else {
+			if (Head == Tail != NULL) {
+				delete star;
+				Tail = NULL;
+				Head = NULL;
+				cout << "Дек пустой\n";
+			}
+			else {
+				if (Head->Next != Tail && Head->Next != NULL) {
+					for (;;) {
+						if (star->Next != NULL) { star = star->Next; }
+
+						else { break; }
+					}
+					Tail = star->Prev;
+					delete star;
+					star = Tail;
+					Tail->Next = NULL;
+
+				}
+				else {
+					if (Head->Next == Tail) {
+						delete Tail;
+						Tail = Head;
+						Tail->Next = NULL;
+						Head->Prev = NULL;
+
+					}
+				}
+			}
+		}
+		}
+
+	default: {
+
+		cout << "Ошибка\n";
+		break;
+	}
+	}
+}
+
+int main(void) {
+
+	setlocale(LC_ALL, "Russian");
+
+	List lst;
+
+	for (;;) {
+
+		int c;
+		cout << "Какое действие выполнить?\n";
+		cout << "1) Вставка нового элемента с заданного конца\n";
+		cout << "2) Удаление элемента с заданного конца\n";
+		cout << "3) Поиск элемента в деке\n";
+		cin >> c;
+
+		switch (c) {
+
+		case 1: {
+
+			int m, n;
+			cout << "Введите элемент, который нужно добавить:\n";
+			cin >> m;
+			lst.Add(m);
+			lst.Show();
+			break;
+		}
+
+		case 2: {
+
+			lst.Delete();
+			lst.Show();
+			break;
+		}
+
+		case 3: {
+
+			int n;
+			cout << "Введите элемент, который нужно найти:\n";
+			cin >> n;
+			lst.Search(n);
+			break;
+		}
+
+		default: {
+
+			cout << "Ошибка\n";
+			break;
+		}
+
+		}
+
+	}
+
+	system("pause");
+
+}
+
+
+
 
