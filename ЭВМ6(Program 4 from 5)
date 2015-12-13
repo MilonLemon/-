@@ -1,1 +1,181 @@
+#include "stdafx.h"
+#include <iostream>
+#include <fstream>
 
+using namespace std;
+struct Node
+{
+	int x;
+	Node *Next;
+};
+
+class List
+{
+	Node *Head, *Tail;
+public:
+	List() :Head(NULL), Tail(NULL) {};
+	~List();
+	void Add(int x);
+	void Delete();
+	void Show();
+	int check();
+};
+
+
+List::~List()
+{
+	while (Head)
+	{
+		Tail = Head->Next;
+		delete Head;
+		Head = Tail;
+	}
+}
+
+void List::Add(int x)
+{
+	Node *temp = Head;
+	Node *temp_2 = new Node;
+	temp_2->x = x;
+
+	if (Head != NULL) {
+
+		temp_2->Next = temp;
+		Head = temp_2;
+	}
+
+	if (Head == NULL) {
+		temp_2->Next = NULL;
+		Head = Tail = temp_2;
+	}
+}
+
+
+void List::Show()
+{
+	cout << "\n";
+
+	Node *temp = Tail;
+
+	temp = Head;
+
+
+	while (temp != NULL)
+	{
+		cout << temp->x << " ";
+		temp = temp->Next;
+	}
+
+	cout << "\n\n";
+}
+
+void List::Delete() {
+
+	Node *FYPrev = NULL;
+	Node *star = Head;
+	Node *DNext = NULL;
+	Node *Dzam = NULL;
+	int k = 0;
+	int N = 1;
+	if (Head == NULL && Tail == NULL) {}
+	else {
+		if (star->Next == Tail) {
+			DNext = star;
+			star = star->Next;
+			delete star;
+			star = DNext;
+			Head = Tail = star;
+			star->Next = NULL;
+			Tail->Next = NULL;
+
+
+		}
+		else {
+			if (Head->Next != Tail && Head->Next != NULL) {
+
+
+				for (;;) {
+					if (star->Next == Tail) { FYPrev = star; }
+
+
+					if (star->Next != NULL) { star = star->Next; }
+					else { break; }
+				}
+
+
+				delete star;
+				star = FYPrev;
+				Tail = star;
+				Tail->Next = NULL;
+			}
+			else {
+				if (star == Head && star == Tail) {
+
+					delete star;
+					Head = NULL;
+					Tail = NULL;
+
+				}
+			}
+		}
+	}
+}
+
+int List::check() {
+	if (Tail == NULL && Head == NULL) {
+		 return 0;
+	}
+	else { 
+		return 1; 
+	}
+
+}
+
+int main(void) {
+
+	setlocale(LC_ALL, "Russian");
+
+	List lst;
+	char a[] = "(";
+	char b[] = ")";
+	int c = 0;
+	char buff[100]; 
+	ifstream fin("C:\\Users\\Mila\\Desktop\\skobki.txt");
+
+	fin.getline(buff, 100);
+	fin.close();
+	cout << buff << endl;
+	for (int i = 0; i < 100; i++) {
+
+		if (buff[i] == a[0]) {
+
+			lst.Add(1);
+		}
+
+		if (buff[i] == b[0]) {
+
+			if (lst.check()) {
+
+				lst.Delete();
+			}
+
+			else {
+				cout << "Нашел ошибку";
+				c = 1;
+				break;
+			}
+		}
+	}
+
+	cout << '\n';
+	lst.Show();
+	if (c == 1) { 
+		cout << "Есть ошибка";
+	}
+	else { 
+		cout << "Все правильно"; 
+	}
+	cout << '\n';
+
+	system("pause");
+}
