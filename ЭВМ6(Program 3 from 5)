@@ -38,7 +38,7 @@ void List::Add(int x)
 	cin >> n;
 	switch (n) {
 	case (1) : {
-		/*
+
 		Node *temp = Head;
 		Node *temp_2 = new Node;
 		Node *temp_3;
@@ -46,92 +46,43 @@ void List::Add(int x)
 
 
 		if (Head != NULL) {
-		temp->Prev = temp_2;
-		temp_2->Next = temp;
-		Head = temp_2;
-		Head->Prev = NULL;
+			temp->Prev = temp_2;
+			temp_2->Next = temp;
+			Head = temp_2;
+			Head->Prev = NULL;
 
 		}
 
 		if (Head == NULL) {
-		temp_2->Next = NULL;
-		temp_2->Prev = NULL;
-		Head = Tail = temp_2;
-		}*/
-
-		Node *temp = new Node;
-		Node *FG = NULL;
-		temp->x = x;
-		Node *star = Head;
-
-		if (star == NULL && Head == NULL && Tail == NULL) {
-			temp->Next = NULL;
-			Head = Tail = star = temp;
-
-		}
-		else {
-			if (Head != NULL) {
-				FG = star;
-				star->Prev = temp;
-				Head = temp;
-				star = star->Prev;
-				star->Next = FG;
-				star = star->Next;
-				Head->Prev = NULL;
-
-
-			}
-
+			temp_2->Next = NULL;
+			temp_2->Prev = NULL;
+			Head = Tail = temp_2;
+			Head->Next = NULL;
+			Head->Prev = NULL;
+			Tail->Next = NULL;
+			Tail->Prev = NULL;
 		}
 
-		break;
-	}
+			break;
+		}
 
 	case (2) : {
-		/*
+
 		Node *temp = Tail;
 		Node *temp_2 = new Node;
 		temp_2->x = x;
 
 		if (Head != NULL) {
-		temp->Next = temp_2;
-		temp_2->Prev = temp;
-		Tail = temp_2;
-		Tail->Next = NULL;
+			temp->Next = temp_2;
+			temp_2->Prev = temp;
+			Tail = temp_2;
+			Tail->Next = NULL;
 		}
 
 		if (Head == NULL) {
-		temp_2->Next = NULL;
-		temp_2->Prev = NULL;
-		Head = Tail = temp_2;
-		}*/
-
-		Node *temp = new Node;
-		temp->x = x;
-		Node *star = Tail;
-
-
-		if (Head == NULL && Tail == NULL) {
-			Tail = temp;
-			Head = temp;
-			Tail->Next = NULL;
-			Head->Prev = NULL;
-
-		}
-		else {
-
-			if (Head != NULL)
-			{
-
-				star->Next = temp;
-				temp->Prev = star;
-				Tail = temp;
-				temp->Next = NULL;
-				Tail->Next = NULL;
-
-
-			}
-
+			temp_2->Next = NULL;
+			temp_2->Prev = NULL;
+			Head = Tail = temp_2;
 		}
 		break;
 	}
@@ -144,7 +95,8 @@ void List::Add(int x)
 
 
 	}
-}
+	}
+
 
 void List::Search(int x)
 {
@@ -223,11 +175,12 @@ void List::Delete() {
 						Tail = Head;
 						Tail->Next = NULL;
 						Head->Prev = NULL;
-
+						
 					}
 				}
 			}
 		}
+		break;
 	}
 
 	case (2) : {
@@ -265,7 +218,8 @@ void List::Delete() {
 				}
 			}
 		}
-		}
+		break;
+	}
 
 	default: {
 
@@ -331,7 +285,4 @@ int main(void) {
 	system("pause");
 
 }
-
-
-
 
