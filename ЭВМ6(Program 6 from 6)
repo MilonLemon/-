@@ -1,1 +1,122 @@
+#include "stdafx.h"
+#include <iostream>
+#include <fstream>
+#include <string>
 
+using namespace std;
+struct Node
+{
+	int x;
+	Node *Next, *Prev;
+};
+
+class List
+{
+	Node *Head, *Tail;
+public:
+	List() :Head(NULL), Tail(NULL) {};
+	~List();
+	void Add(int x);
+	void Search();
+	void Show();
+};
+
+
+List::~List()
+{
+	while (Head)
+	{
+		Tail = Head->Next;
+		delete Head;
+		Head = Tail;
+	}
+}
+
+void List::Add(int x)
+{
+	Node *temp = Tail;
+	Node *temp_2 = new Node;
+	temp_2->x = x;
+
+	if (Head != NULL) {
+		temp->Next = temp_2;
+		temp_2->Prev = temp;
+		Tail = temp_2;
+		Tail->Next = NULL;
+
+	}
+
+	else
+
+		if (Head == NULL) {
+			temp_2->Next = NULL;
+			temp_2->Prev = NULL;
+			Head = Tail = temp_2;
+
+		}
+}
+
+void List::Search() {
+
+	Node *temp = Head;
+	int min;
+	int c = 0, n = 0;
+
+	while (temp != NULL) {
+
+		if (c == 0) {
+			min = temp->x;
+			c++;
+		}
+
+		if (temp->x < min) {
+			min = temp->x;
+		}
+		temp = temp->Next;
+		n++;
+	}
+	cout << min << " - длина самой короткой строки файла\n";
+	cout << n << " - номер самой короткой строки файла\n";
+}
+
+void List::Show()
+{
+	cout << "\n";
+
+	Node *temp = Tail;
+
+	temp = Head;
+	while (temp != NULL)
+	{
+		cout << temp->x << " ";
+		temp = temp->Next;
+	}
+	cout << "\n";
+}
+
+
+int main(void) {
+
+	setlocale(LC_ALL, "Russian");
+
+	List lst;
+	int n;
+	ifstream file("C:\\Users\\Mila\\Desktop\\stroki.txt");
+	char line[256];
+	while (!file.eof())
+
+	{
+		file.getline(line, sizeof(line));
+		n = strlen(line);
+		cout << line << endl;
+		cout << n << endl;
+		lst.Add(n);
+	}
+
+	file.close();
+	lst.Show();
+	lst.Search();
+
+	system("pause");
+	return 0;
+}
