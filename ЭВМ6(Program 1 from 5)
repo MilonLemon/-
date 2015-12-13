@@ -1,3 +1,4 @@
+//Стек, вершина котого Head
 #include "stdafx.h"
 #include <iostream>
 
