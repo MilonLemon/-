@@ -40,9 +40,9 @@ void List::Add(int x)
 
 	if (Head != NULL) {
 
-			temp_2->Next = temp;
-			Head = temp_2;
-		}
+		temp_2->Next = temp;
+		Head = temp_2;
+	}
 
 	if (Head == NULL) {
 		temp_2->Next = NULL;
@@ -64,16 +64,20 @@ void List::Show()
 		temp = temp->Next;
 	}
 
-	cout << "\n";
+	cout << "\n\n";
 }
 
 void List::Delete() {
 
 	Node *temp = Head;
 
-			Head = temp->Next;
-			delete temp;
-			temp = Head;
+	Head = temp->Next;
+	delete temp;
+	temp = Head;
+
+	if (Head == NULL && Tail == NULL) {
+		cout << "Стек пустой\n";
+	}
 
 }
 
@@ -105,7 +109,6 @@ int main(void) {
 		}
 
 		case 2: {
-
 			lst.Delete();
 			lst.Show();
 
