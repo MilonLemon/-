@@ -167,21 +167,24 @@ void search()
 			cout << "Введите наименование тура: \n";
 			cin >> name;
 			for (i = 0; i<SIZE; i++)
-				if (!strcmp(name, trip[i].tourname))break;
+				if (!strcmp(name, trip[i].tourname)) {
+
+					cout << "\n";
+					cout << "Наименование тура: " << trip[i].tourname << '\n';
+					cout << "Фамилия клиента: " << trip[i].lastname;
+					cout << "\nЦена одного дня (в рублях): ";
+					cout << trip[i].price_for_one_day << '\n';
+					cout << "Дата заезда: " << trip[i].arrival_date << '\n';
+					cout << "Количество дней: " << trip[i].number_of_days << '\n';
+					cout << "Стоимость проезда: " << trip[i].spend_on_the_passage << '\n';
+					cout << "Курс валюты: " << trip[i].course << '\n';
+					cout << "Количество валюты: " << trip[i].amount << '\n';
+				}
+
 			if (i == SIZE) {
 				cout << "Тур не найден.\n";
 				return;
 			}
-
-			cout << "Наименование тура: " << trip[i].tourname << '\n';
-			cout << "Фамилия клиента: " << trip[i].lastname;
-			cout << "\nЦена одного дня (в рублях): ";
-			cout << trip[i].price_for_one_day << '\n';
-			cout << "Дата заезда: " << trip[i].arrival_date << '\n';
-			cout << "Количество дней: " << trip[i].number_of_days << '\n';
-			cout << "Стоимость проезда: " << trip[i].spend_on_the_passage << '\n';
-			cout << "Курс валюты: " << trip[i].course << '\n';
-			cout << "Количество валюты: " << trip[i].amount << '\n';
 
 			break;
 
