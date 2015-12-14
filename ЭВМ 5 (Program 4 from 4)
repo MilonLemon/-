@@ -28,7 +28,6 @@ int main()
 {
 	setlocale(LC_ALL, "Russian");
 
-	cout << "\a";
 	char choice;
 	init_list();
 	for (;;) {
