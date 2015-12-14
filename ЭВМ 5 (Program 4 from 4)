@@ -1,4 +1,3 @@
-//поиск и сортировка - по наименованию тура, стоимости проезда, дате заезда.
 #include "stdafx.h"
 #include <iostream>
 #include <cctype>
@@ -19,7 +18,7 @@ struct inv_type {
 	int amount;
 }trip[SIZE];
 
-void enter(), init_list(), display();
+void enter(), init_list(), display(), order();
 void update(), input(int i), search();
 
 int menu();
@@ -32,7 +31,9 @@ int main()
 	init_list();
 	for (;;) {
 		choice = menu();
+
 		switch (choice) {
+
 		case 'e': enter();
 			break;
 		case 'd': display();
@@ -41,7 +42,12 @@ int main()
 			break;
 		case 's': search();
 			break;
+		case 'o': order();
+			break;
 		case 'q': return 0;
+
+		default: break;
+
 		}
 	}
 
@@ -62,12 +68,13 @@ int menu()
 		cout << "(D)isplay\n";
 		cout << "(U)pdate\n";
 		cout << "(S)earch\n";
+		cout << "(O)rder\n";
 		cout << "(Q)uit\n\n";
 		cout << "Выберите команду: \n";
 
 		cin >> ch;
 
-	} while (!strchr("edusq", tolower(ch)));
+	} while (!strchr("edusoq", tolower(ch)));
 	return tolower(ch);
 }
 void enter()
@@ -241,6 +248,59 @@ void search()
 			}
 
 			break;
+		}
+	}
+}
+
+void order()
+{
+	char a1;
+	char a2;
+	char a3;
+	char a4;
+	double b;
+	int c1;
+	int c2;
+	int c3;
+	
+	for (int i = 0; i < 2; i++) {
+
+		if (strcmp(trip[i].tourname, trip[i + 1].tourname) > 0) {
+
+			cout << "\n";
+
+				a1 = *trip[i].tourname;
+				*trip[i].tourname = *trip[i + 1].tourname;
+				*trip[i + 1].tourname = a1;
+
+				a2 = *trip[i].lastname;
+				*trip[i].lastname = *trip[i + 1].lastname;
+				*trip[i + 1].lastname = a2;
+
+				b = trip[i].price_for_one_day;
+				trip[i].price_for_one_day = trip[i + 1].price_for_one_day;
+				trip[i + 1].price_for_one_day = b;
+
+				a3 = *trip[i].arrival_date;
+				*trip[i].arrival_date = *trip[i + 1].arrival_date;
+				*trip[i + 1].arrival_date = a3;
+
+				c1 = trip[i].number_of_days;
+				trip[i].number_of_days = trip[i + 1].number_of_days;
+				trip[i + 1].number_of_days = c1;
+
+				a4 = *trip[i].spend_on_the_passage;
+				*trip[i].arrival_date = *trip[i + 1].spend_on_the_passage;
+				*trip[i + 1].spend_on_the_passage = a4;
+
+				c2 = trip[i].course;
+				trip[i].course = trip[i + 1].course;
+				trip[i + 1].course = c2;
+
+				c3 = trip[i].amount;
+				trip[i].amount = trip[i + 1].amount;
+				trip[i + 1].amount = c3;
+
 		}
 	}
 }
