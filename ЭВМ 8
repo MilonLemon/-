@@ -1,1 +1,212 @@
+#include "stdafx.h"
+#include <iostream>
+#include <string.h>
 
+using namespace std;
+
+class Object
+{
+public:
+	char* string;
+	Object *next = NULL;
+	Object *previous = NULL;
+	int index;
+};
+
+class List
+{
+public:
+	Object *ptrToEnd = NULL;
+	Object *ptrToBegin = NULL;
+	void add(char*);
+	void insert(int index, char*);
+	Object* at(int i);
+	void erase(int index);
+	void clear();
+	void print();
+	void sort();
+	int size();
+	int sizeOfList = 0;
+};
+
+void List::add(char *str)
+{
+	if (this->ptrToEnd != NULL)
+	{
+		this->ptrToEnd->next = new Object;
+		this->ptrToEnd->next->index = this->ptrToEnd->index + 1;
+		this->ptrToEnd->next->previous = this->ptrToEnd;
+		this->ptrToEnd = this->ptrToEnd->next;
+		this->ptrToEnd->string = str;
+	}
+	else {
+		this->ptrToEnd = new Object;
+		this->ptrToEnd->index = 0;
+		this->ptrToEnd->string = str;
+		this->ptrToBegin = this->ptrToEnd;
+	}
+	sizeOfList++;
+}
+
+int List::size()
+{
+	return sizeOfList;
+}
+
+void List::print()
+{
+	Object *current = this->ptrToBegin;
+	for (int i = 0; i < this->size(); i++)
+	{
+		cout << current->string << endl;
+		current = current->next;
+	}
+}
+
+void List::clear()
+{
+	Object *current = this->ptrToBegin;
+	for (int i = 0; i < this->size() - 1; i++)
+	{
+		current = current->next;
+		delete current->previous;
+	}
+	this->ptrToBegin = NULL;
+	this->ptrToEnd = NULL;
+	sizeOfList = 0;
+}
+
+Object* List::at(int index)
+{
+	Object *current = this->ptrToBegin;
+	if (index < this->size() && index >= 0)
+	{
+		for (int i = 0; i != index; i++)
+		{
+			current = current->next;
+		}
+		return current;
+	}
+	else return NULL;
+}
+
+void List::insert(int index, char *str)
+{
+	Object *target = this->at(index);
+	Object *current = target;
+	Object *newObj = new Object;
+	newObj->string = str;
+	newObj->index = index;
+
+	if (target != NULL)
+	{
+		for (int i = 0; i < this->size() - index; i++)
+		{
+			current->index += 1;
+			current = current->next;
+		}
+
+		newObj->previous = target->previous;
+		newObj->next = target;
+		if (target->previous != NULL)
+		{
+			target->previous->next = newObj;
+		}
+		target->previous = newObj;
+	}
+	else
+	{
+		if (index == this->size())
+		{
+			this->ptrToEnd->next = newObj;
+			newObj->previous = this->ptrToEnd;
+			this->ptrToEnd = newObj;
+		}
+	}
+	if (newObj->index == 0) this->ptrToBegin = newObj;
+	if (newObj->index == this->size() - 1) this->ptrToEnd = newObj;
+	sizeOfList++;
+}
+
+void List::erase(int index)
+{
+	Object *target = this->at(index);
+	Object *current = target;
+
+	if (target != NULL)
+	{
+		for (int i = 0; i < this->size() - index; i++)
+		{
+			current->index -= 1;
+			current = current->next;
+		}
+
+		if (target->previous != NULL)
+		{
+			target->previous->next = target->next;
+		}
+
+		if (target->next != NULL)
+		{
+			target->next->previous = target->previous;
+		}
+
+	}
+
+	if (index == 0) this->ptrToBegin = target->next;
+	if (index == this->size() - 1) this->ptrToEnd = target->previous;
+	delete target;
+	sizeOfList--;
+}
+
+void List::sort()
+{
+	Object *min;
+	char* temp;
+	for (int i = 0; i < this->size(); i++)
+	{
+		min = at(i);
+		for (int j = i + 1; j < this->size(); j++)
+		{
+			if (strcmp(at(j)->string, min->string)<0)
+				min = at(j);
+		}
+		if (min != at(i))
+		{
+			temp = at(i)->string;
+			at(i)->string = min->string;
+			min->string = temp;
+		}
+	}
+}
+
+int main()
+{
+	setlocale(LC_ALL, "russian");
+	List list1;
+	char *temp = new char[50];
+	int countOfStrings;
+	cout << "Введите количество строк: " << endl;
+	cin >> countOfStrings;
+
+	cout << "Строки:" << endl;
+
+	for (int i = 0; i < countOfStrings; i++)
+	{
+		cin >> temp;
+		list1.add(temp);
+		temp = new char[50];
+	}
+
+	cout << endl;
+	list1.print();
+
+
+	list1.sort();
+
+	cout << endl << "Список после сортировки: " << endl;
+	list1.print();
+
+	system("pause");
+	return 0;
+}
