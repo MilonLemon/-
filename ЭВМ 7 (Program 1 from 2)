@@ -1,0 +1,46 @@
+#include "stdafx.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+int main(void) {
+
+	setlocale(LC_ALL, "Russian");
+
+	int n, i = 0, h = 0;
+	ifstream file("C:\\Users\\Mila\\Desktop\\кот.txt");
+	string a[256];
+	string b = "кот";
+	string c = "пес";
+	char word[64];
+	while (!file.eof())  {
+		file >> word; 
+		a[i] = word;
+		i++;
+	}
+	file.close();
+
+	while (a[h] != a[i]) {
+		if (a[h] == b) {
+			a[h] = c;
+		}
+		h++;
+	}
+	h = 0;
+	ofstream file_2("C:\\Users\\Mila\\Desktop\\пес.txt");
+	while (a[h] != a[i]) {
+		if (a[h] == ".") {
+			file_2 << a[h]<< endl;
+		}
+		else {
+			file_2 << a[h] << " ";
+		}
+		h++;
+	}
+	file_2.close();
+	system("pause");
+	return 0;
+
+}
