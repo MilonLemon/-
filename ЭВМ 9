@@ -1,1 +1,77 @@
+#include "stdafx.h"
+#include <iostream>
 
+using namespace std;
+
+bool Func(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
+
+	float x, y;
+
+	x = ((x1*y2 - x2*y1)*(x4 - x3) - (x3*y4 - x4*y3)*(x2 - x1)) / ((y1 - y2)*(x4 - x3) - (y3 - y4)*(x2 - x1));
+	y = ((y3 - y4)*x - (x3*y4 - x4*y3)) / (x4 - x3);
+
+	if (((x1 <= x) && (x2 >= x) && (x3 <= x) && (x4 >= x)) || ((y1 <= y) && (y2 >= y) && (y3 <= y) && (y4 >= y)))
+		return true;
+	else
+		return false;
+}
+
+bool Check(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4) {
+
+	float k1, k2;
+
+	k1 = (x2 - x1) / (y2 - y1);
+	k2 = (x4 - x3) / (y4 - y3);
+	if (k1 == k2)
+
+		return true;
+}
+
+
+int main(void) {
+
+	setlocale(LC_ALL, "Russian");
+
+	int n, k = 0;
+
+	cout << "Сколько отрезков содержит ломаная?" << endl;
+	cin >> n;
+
+	if (n == 1 || n == 0) {
+		cout << "Ломаная не имеет самопересечения." << endl;
+		system("pause");
+		return 0;
+	}
+
+	if (n == 2) {
+		cout << "Ломаная имеет самопересечения,только если вершины совпадают." << endl;
+		system("pause");
+		return 0;
+	}
+
+	int *x = new int[n];
+	int *y = new int[n];
+
+	cout << "Введите координаты:" << endl;
+	for (int i = 0; i < (n + 1); i++) {
+		cin >> x[i] >> y[i];
+	}
+
+	for (int i = 0; i < n - 1; i++)
+		for (int j = i + 2; j < n; j++) {
+
+			bool b = Check(x[i], y[i], x[i + 1], y[i + 1], x[j], y[j], x[j + 1], y[j + 1]);
+			if (b) continue; 
+
+			bool a = Func(x[i], y[i], x[i + 1], y[i + 1], x[j], y[j], x[j + 1], y[j + 1]);
+			if (a) k++;
+			cout << k << endl;
+		}
+
+	cout << k << endl;
+	if (k > 0) { cout << "Ломаная имеет самопересечения." << endl; }
+	if (k == 0) { cout << "Ломаная не имеет самопересечений." << endl; }
+
+	system("pause");
+	return 0;
+}
