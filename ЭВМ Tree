@@ -1,1 +1,372 @@
+#define _CRT_SECURE_NO_WARNINGS
+#include "stdafx.h"
+#include <iostream>
+#include <stdio.h>
+#include <string>
+#include <cmath>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct node // узел
+{
+	node* left = NULL; // место под левого потомка
+	node* right = NULL; // место под правого потомка
+	node* parent = NULL; // место под предка
+	int value; // значение
+	int lvl = 0; // уровень узла
+	int coord = 0; // координата для вывода на экран
+	int number = 1; // "номер"
+};
+
+class tree // дерево
+{
+	node* root = NULL; // место под корень дерева
+	int height = 0; // высота
+
+public:
+	void add(int value); // добавить узел
+	void drawTree(); // нарисовать дерево
+	void getSubNodes(node* root, int lvl, string &line); // получить поддеревья
+	void deleteSubTree(int number, int mode = 1); // удалить поддерево с номером
+	void deleteNode(node* target); // удалить узел
+	void deleteNodeAndRebuild(node* target); // удалить узел с перестройкой
+	void renewNode(node* target); // обновить узел (после перестройки)
+	void doTask(); // выполнить задание
+	int countChildren(node* target, vector<int> &answer); // получить число потомков узла и проверить
+	int countNodes() { vector<int> temp; return countChildren(root, temp) + 1; } // посчитать узлы
+	int countLeafs(); // Посчитать число листьев у дерева
+	int countSubTreeLeafs(node* subRoot); // Посчитать число листьев у поддерева
+	void clear() { deleteNode(root); } // удалить дерево
+	int getHeight(); // получить высоту
+	int getSubTreeHeight(node* subRoot); // получить высоту поддерева
+	int find(int value); // найти, где в дереве находится значение
+};
+
+
+void tree::add(int value) // добавление узла
+{
+	node* currentNode = root;
+	node* parent = NULL;
+	while (currentNode != NULL)
+	{
+		parent = currentNode;
+		if (value > currentNode->value) currentNode = currentNode->right; // если значение больше, чем значение предка - вставляем правым потомком
+		else currentNode = currentNode->left; // иначе левым
+	}
+	if (currentNode == root) // если корня у дерева нет, создаем его
+	{
+		currentNode = new node;
+		root = currentNode;
+	}
+	else { currentNode = new node; } // иначе выделяем память под новый узел
+	currentNode->value = value;
+
+	if (parent != NULL) // если существует предок
+	{
+		currentNode->parent = parent; // запоминаем его, как предка нового узла
+		currentNode->lvl = parent->lvl + 1;
+		if (currentNode->value > currentNode->parent->value)
+		{
+			currentNode->parent->right = currentNode;
+			currentNode->number = currentNode->parent->number * 10 + 2;
+		}
+		else {
+			currentNode->parent->left = currentNode;
+			currentNode->number = currentNode->parent->number * 10 + 1;
+		}
+	}
+	if (currentNode->lvl >= height) height++;
+
+}
+
+int tree::find(int value) // поиск места вхождения значения
+{
+	node* currentNode = root;
+	while (currentNode != NULL)
+	{
+		if (value > currentNode->value) currentNode = currentNode->right;
+		else if (value < currentNode->value) currentNode = currentNode->left;
+		else return currentNode->number;
+	}
+	return -1; // если не нашли, возвращаем -1
+}
+
+void tree::drawTree() // нарисовать дерево
+{
+	string line;
+	for (int i = 0; i < height; i++)
+	{
+		getSubNodes(root, i, line); // рекурсивно записываем в строку соотв узлы
+		cout << line << endl; // выводим
+		line.clear(); // очищаем строку
+	}
+}
+
+void tree::getSubNodes(node* root1, int lvl, string &line)
+{
+
+	char* buf = new char[10];
+	if (root1->lvl == lvl) // если уровень тот, который нужен
+	{
+		sprintf(buf, "%d", root1->value); // записываем его номер в строку
+		if (root1->parent == NULL) root1->coord = pow(2, height); // у корня координата 2^height
+		else  if (root1->value > root1->parent->value)
+			root1->coord = root1->parent->coord + (height - root1->parent->lvl); // остальные потомки сдвигаются влево или вправо
+		else
+			root1->coord = root1->parent->coord - (height - root1->parent->lvl);
+
+		while (line.length() < unsigned(root1->coord)) // заполняем пустоты пробелами
+			line.append(" ");
+		line.append(buf); // добавляем в строку номер
+	}
+	else if (root1->lvl < lvl)
+	{
+		if (root1->left != NULL)
+			getSubNodes(root1->left, lvl, line); // повторяем рекурсивно для левого потомка, если он существует
+
+		if (root1->right != NULL)
+			getSubNodes(root1->right, lvl, line); // повторяем рекурсивно для правого потомка, если он существует
+	}
+}
+
+void tree::deleteSubTree(int number, int mode) // удаление поддерева
+{
+	node* currentNode = NULL;
+	char numb[100];
+	sprintf(numb, "%d", number); // запихиваем в строку numb полученный аргумент
+
+	if (numb[0] == '1') currentNode = root;
+	int i = 1;
+
+	for (; numb[i] != '\0' && numb[i] != 0; i++) // двигаемся по "номеру" узла
+	{
+		if (currentNode == NULL)
+		{
+			cout << "Узел не найден! " << endl;
+			break;
+		}
+		else
+		{
+			switch (numb[i])
+			{
+			case '1':
+				currentNode = currentNode->left;
+				break;
+			case '2':
+				currentNode = currentNode->right;
+				break;
+			}
+		}
+	}
+	if (currentNode != NULL)
+	{
+		if (mode == 1)
+			deleteNode(currentNode);
+		else deleteNodeAndRebuild(currentNode);
+	}
+	else cout << "Узел не найден! " << endl;
+
+}
+
+void tree::deleteNode(node* target) // удаление узла
+{
+	if (target != NULL)
+	{
+		if (target->left != NULL) deleteNode(target->left); // рекурсивно удаляем левое поддерево
+		if (target->right != NULL) deleteNode(target->right);// рекурсивно удаляем правое поддерево
+		if (target->parent != NULL) // если существует предок, то очищаем его поля "левый предок" и "правый предок"
+		{
+			if (target->parent->left == target) target->parent->left = NULL;
+			else target->parent->right = NULL;
+
+			height = getHeight(); // обновляем высоту дерева
+		}
+		else
+		{
+			root = NULL; // если предка не существует, значит это корень, стираем его адрес
+			height = 0;
+		}
+		delete target;
+	}
+
+}
+
+void tree::deleteNodeAndRebuild(node *target) // удаляет узел и производит перестройку дерева в соответствии с правилом
+{
+	node *replacingNode; // указатель на перемещаемый узел
+	node **position; // указатель на указатель куда перемещать ;)
+	if (target->left == NULL && target->right == NULL) deleteNode(target); // если у узла нет потомков, просто удаляеем
+	else
+	{
+		if (target->parent != NULL) // если существует предок, выясняем куда вставлять. Иначе вставляем в корень
+		{
+			if (target->parent->left == target) position = &(target->parent->left);
+			else position = &(target->parent->right);
+		}
+		else position = &root;
+
+		if (target->left == NULL && target->right != NULL) // выясняем какой узел перемещать
+		{
+			replacingNode = target->right;
+		}
+		else if (target->right == NULL && target->left != NULL)
+		{
+			replacingNode = target->left;
+		}
+		else
+		{
+			replacingNode = target->left->right;
+			while (replacingNode != NULL && replacingNode->right != NULL)
+			{
+				replacingNode = replacingNode->right;
+			}
+			if (replacingNode == NULL)
+			{
+				replacingNode = target->right->left;
+				while (replacingNode != NULL && replacingNode->left != NULL)
+				{
+					replacingNode = replacingNode->left;
+				}
+				if (replacingNode == NULL) replacingNode = target->right;
+			}
+		}
+
+		*position = replacingNode; // перемещаем узел
+
+
+		replacingNode->lvl = target->lvl;
+
+		if (replacingNode->left != NULL) replacingNode->left->parent = replacingNode;
+		if (target->left != replacingNode)
+		{
+			replacingNode->left = target->left;
+			if (replacingNode->left != NULL) replacingNode->left->parent = replacingNode;
+		}
+		else
+		{
+			renewNode(replacingNode->left); // обновляем уровни потомков узла, если нужно
+											//renewNode(replacingNode->right);
+		}
+
+		if (replacingNode->right != NULL) replacingNode->right->parent = replacingNode;
+		if (target->right != replacingNode)
+		{
+			replacingNode->right = target->right;
+			if (replacingNode->right != NULL) replacingNode->right->parent = replacingNode;
+		}
+		else
+		{
+			//renewNode(replacingNode->left);
+			renewNode(replacingNode->right);
+		}
+
+		if (replacingNode->parent->left == replacingNode) replacingNode->parent->left = NULL;
+		else replacingNode->parent->right = NULL;
+
+		replacingNode->parent = target->parent;
+
+		delete target;
+	}
+	height = getHeight(); // обновляем высоту дерева
+}
+
+void tree::renewNode(node *target)
+{
+	if (target != NULL)
+	{
+		target->lvl = target->parent->lvl + 1;
+		renewNode(target->left);
+		renewNode(target->right);
+	}
+}
+
+int tree::getSubTreeHeight(node* subRoot) // получаем высоту поддерева
+{
+	if (subRoot == NULL) return(0);
+	else if (subRoot->left == NULL && subRoot->right == NULL) return(subRoot->lvl + 1);
+	else return max(getSubTreeHeight(subRoot->left), getSubTreeHeight(subRoot->right)); // рекурсивно повторяем для левого и правого поддерева и возвращаем наибольшую высоту
+}
+
+int tree::getHeight() // получить высоту
+{
+	return getSubTreeHeight(root);
+}
+
+void tree::doTask() // выполняем задание
+{
+	vector<int> answer;
+	countChildren(root, answer); // считаем число потомков у корня, и запихиваем в вектор подходящие узлы
+	cout << "Номера вершин, у которых число потомков в правом и левом поддеревьях не равно: " << endl;
+	for (unsigned int i = 0; i < answer.size(); i++)
+	{
+		cout << answer[i] << " ";
+	}
+
+}
+
+int tree::countChildren(node* target, vector<int> &answer) // рекурсивно считаем потомков, подходящих сразу пихаем в вектор
+{
+	int left = 0, right = 0; // число потомков справа и слева
+	if (target->left != NULL) left = countChildren(target->left, answer) + 1;
+	if (target->right != NULL) right = countChildren(target->right, answer) + 1;
+	if (left != right) answer.push_back(target->number); // обнаружили подходящий узел!
+	return left + right;
+}
+
+int tree::countLeafs()
+{
+	return countSubTreeLeafs(root);
+}
+
+int tree::countSubTreeLeafs(node *subRoot)
+{
+	if (subRoot == NULL) return 0;
+	if (subRoot->left == NULL && subRoot->right == NULL)
+	{
+		return 1;
+	}
+	else return countSubTreeLeafs(subRoot->left) + countSubTreeLeafs(subRoot->right);
+}
+
+int main()
+{
+	setlocale(LC_ALL, "ru");
+
+	tree newTree;
+	int count, value, number, mode;
+	cout << "Введите число элементов: "; cin >> count;
+
+	for (int i = 0; i < count; i++)
+	{
+		cout << "Введите значение узла: "; cin >> value;
+		newTree.add(value);
+	}
+	cout << endl << "Дерево: " << endl;
+	newTree.drawTree();
+	cout << endl;
+
+	newTree.doTask();
+
+	cout << endl << "Число узлов: " << newTree.countNodes() << endl;
+	cout << "Число листьев: " << newTree.countLeafs() << endl;
+
+	cout << "выберите режим удаления (1 - обычный, 2 - с перестройкой):" << endl;
+	cin >> mode;
+	cout << endl << "Введите узел для удаления: " << endl;
+	cin >> number;
+
+
+
+	newTree.deleteSubTree(number, mode);
+	cout << endl << "Дерево после удаления узла: " << endl;
+	newTree.drawTree();
+
+
+
+	newTree.clear();
+	system("pause");
+	return 0;
+}
+
 
